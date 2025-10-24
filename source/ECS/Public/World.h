@@ -32,9 +32,9 @@ namespace ECS
 		unsigned int m_maxEntityCount = 0;
 		/** @details 월드의 entity 필드입니다 */
 		unsigned int* m_entities = nullptr;
-		/** @details 월드의 컴포넌트 개수입니다. 이 컴포넌트 개수는 엔티티 구조를 정렬할때 쓰입니다.*/
+		/** @details 월드의 컴포넌트 개수입니다. 이 컴포넌트 개수는 엔티티 구조를 정렬할때 쓰입니다. */
 		unsigned int m_componentCount = 0;
-		/** @details 컴포넌트에 따른 아키타입 개수입니다. 컴포넌트의 개수가 변할때마다 변경됩니다*/
+		/** @details 컴포넌트에 따른 아키타입 개수입니다. 컴포넌트의 개수가 변할때마다 변경됩니다. */
 		unsigned int m_archetypeCount = 0;
 
 	

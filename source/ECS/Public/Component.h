@@ -7,7 +7,18 @@ namespace ECS
     struct Component
     {
 
+    };
 
+    struct ComponentA : Component
+    {
+
+    };
+    struct ComponentB : Component
+    {
+
+    };
+    struct ComponetC : Component
+    {
 
     };
 }
