@@ -2,6 +2,9 @@
 
 set(ECS_SOURCE
     Private/ECS.cpp
+    Private/World.cpp
+    Private/Archetype.cpp
+    Private/Component.cpp
 )
 
 add_library(ECS STATIC ${ECS_SOURCE})

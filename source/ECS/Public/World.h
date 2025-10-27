@@ -37,17 +37,25 @@ namespace ECS
 		/** @details 컴포넌트에 따른 아키타입 개수입니다. 컴포넌트의 개수가 변할때마다 변경됩니다. */
 		unsigned int m_archetypeCount = 0;
 
-	
 	public:
-		/** @details  */
+		/** @details 월드를 초기화 합니다. */
 		void Initialize(const int& maxEntityCount);
 		/** @details 월드의 엔티티 필드를 정렬합니다. 컴포넌트 개수에 영향을 받습니다. */
 		void AlignEntities();
 		/** @details 월드에 사용할 컴포넌트를 추가합니다. */
 		void RigisterComponentType();
 
+		/** @details 컴포넌트 쿼리를 돌립니다. */
+		template<typename... Components>
+		Archetype<Components...> GetArchetype()
+		{
+			Archetype<Components...>::
+		}
+
+
 
 	private:
+
 
 
 	};
