@@ -1,14 +1,28 @@
 #include <iostream>
-#include <ECS.h>
+
 #include <Application.h>
-using namespace ECS;
+
+
+class A 
+{
+
+};
+class B
+{
+
+};
+
+#include <Archetype.h>
+
 int main()
 {
-    
-    struct Archetype<struct ComponentA> archetype(1,1,1);
+
     std::cout << "Hello World!" << std::endl;
 
     Application app;
+     
+    std::cout << ECS::Archetype<A, B>::size << std::endl;
+
 
 
     app.Run();

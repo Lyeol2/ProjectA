@@ -1,16 +1,23 @@
 namespace ECS
 {
+	template<size_t ChunkSize, size_t TypeSize>
 	struct Chunk
 	{
-		// 32 Byte
+		Chunk()
+		{
+			// KB ¥‹¿ß
+			m_data = new char[1024 * ChunkSize];
+		}
+		virtual ~Chunk() noexcept
+		{
+			if (m_data != nullptr)
+			{
+				delete[] m_data;
+				m_data = nullptr;
+			}
+		}
 
-		int m_data_0;
-		int m_data_1;
-		int m_data_2;
-		int m_data_3;
-		int m_data_4;
-
-
+		char* m_data = nullptr;
 
 	};
 }

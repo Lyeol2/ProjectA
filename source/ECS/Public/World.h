@@ -45,13 +45,13 @@ namespace ECS
 		/** @details 월드에 사용할 컴포넌트를 추가합니다. */
 		void RigisterComponentType();
 
-		/** @details 컴포넌트 쿼리를 돌립니다. */
-		template<typename... Components>
-		Archetype<Components...> GetArchetype()
+		template<typename ...Components>
+		void CreateEntity()
 		{
-			Archetype<Components...>::
+
 		}
 
+		void DestroyEntity(const Entity& entity);
 
 
 	private:
