@@ -1,11 +1,10 @@
 #pragma once
-
+#include <Chunk.h>
+#include <vector>
 #include <type_traits>
 
 namespace ECS
 {
-
-	class Chunk;
 
 
 	/**
@@ -28,32 +27,38 @@ namespace ECS
 	template <typename Component, typename... Components>
 	struct Archetype
 	{
-		Archetype(int chunkCapacity, int chunkSize, int chunkCount)
-		{
-			m_chunkCapacity = chunkCapacity;
-			m_chunkUnit = chunkSize;
-			m_chunkCount = chunkCount;
-		}
-		virtual ~Archetype() noexcept
-		{
-
-		}
-
 		using current = SingleArchetype<Component>;
 
 		using next = std::conditional_t<sizeof...(Components) == 1,
 			SingleArchetype<Components...>,
 			Archetype<Components...>>;
 
-		constexpr static size_t size = sizeof(Component) + next::size;
+		constexpr static size_t g_size = sizeof(Component) + next::size;
 
 	public:
-		/** @details 아키타입내의   */
-		Chunk* m_chunks = nullptr;
-		int m_chunkCapacity;
-		int m_chunkUnit = 0;
-		int m_chunkCount = 0;
+		/** @details 아키타입내의 청크 */
+		static vector<Chunk<16, size>> g_chunks = nullptr;
 
+
+		/**
+		* Archetype의 쿼리
+		*/
+		static void Query(void(*query)(Component arg, Component... args))
+		{
+			for (size_t i = 0; i < length; i++)
+			{
+
+			}
+		}
+
+		static void AddData()
+		{
+
+		}
+		static void RemoveData()
+		{
+
+		}
 
 	};
 };
