@@ -1,17 +1,16 @@
 namespace ECS
 {
-	template<size_t ChunkSize, size_t TypeSize>
+
+	template<size_t indexSize, size_t ChunkSize, size_t TypeSize>
 	struct Chunk
 	{
-
-
 		char* m_data = nullptr;
 		int m_size = 0;
 
 		Chunk()
 		{
 			// KB 단위
-			m_data = new char[1024 * ChunkSize];
+			m_data = new char[1024 * (indexSize + ChunkSize)];
 		}
 		virtual ~Chunk() noexcept
 		{
@@ -22,7 +21,23 @@ namespace ECS
 			}
 		}
 
-	
+		void AddData(const char* data)
+		{
+			// 사이즈가 넘는다면 추가하지 않음
+			if (m_size + TypeSize > 1024 * ChunkSize)
+				return;
+			memcpy(m_data + m_size, data, TypeSize);
+			m_size += size;
+		}
+		void RemoveData(size_t index)
+		{
+			// 인덱스가 유효하지 않다면 제거하지 않음
+			if (index * TypeSize >= m_size)
+				return;
+			// 마지막 데이터를 제거할 위치로 복사
+			memcpy(m_data + index * TypeSize, m_data + m_size - TypeSize, TypeSize);
+			m_size -= TypeSize;
+		}
 
 		/**
 		* @brief Chunk의 커스텀 Iterator
@@ -31,15 +46,15 @@ namespace ECS
 		*/
 		class iterator : std::iterator<std::input_iterator_tag, char>
 		{
-			T* _ptr;
+			char* _ptr;
 		public:
-			explicit iterator(T* ptr) :_ptr(ptr) {}
-
+			explicit iterator(char* ptr) :_ptr(ptr) {}
 
 			iterator& operator++() { _ptr += TypeSize; return (*this); }
 			iterator operator++(int) { iterator retval = *this; _ptr += TypeSize; return retval; }
 
 			reference operator*() { return *_ptr; }
+
 			bool operator==(iterator other) const { return _ptr == other._ptr; }
 			bool operator!=(iterator other) const { return _ptr != other._ptr; }
 		};

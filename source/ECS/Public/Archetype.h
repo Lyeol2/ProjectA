@@ -37,7 +37,7 @@ namespace ECS
 
 	public:
 		/** @details 아키타입내의 청크 */
-		static vector<Chunk<16, size>> g_chunks = nullptr;
+		static std::vector<Chunk<4, 16, g_size>> g_chunks;
 
 
 		/**

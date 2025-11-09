@@ -1,4 +1,4 @@
 struct Entity
 {
-    int m_instanceID;
+    int m_entity;
 };	
