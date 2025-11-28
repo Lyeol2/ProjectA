@@ -1,11 +1,17 @@
+#pragma once
+#include <iterator>
+
 namespace ECS
 {
+
 
 	template<size_t indexSize, size_t ChunkSize, size_t TypeSize>
 	struct Chunk
 	{
 		char* m_data = nullptr;
 		int m_size = 0;
+
+		constexpr static size_t g_unitSize = indexSize + TypeSize;
 
 		Chunk()
 		{
@@ -24,10 +30,11 @@ namespace ECS
 		void AddData(const char* data)
 		{
 			// 사이즈가 넘는다면 추가하지 않음
-			if (m_size + TypeSize > 1024 * ChunkSize)
+			if (m_size + g_unitSize > 1024 * ChunkSize)
 				return;
-			memcpy(m_data + m_size, data, TypeSize);
-			m_size += size;
+			memcpy(m_data + m_size, data, g_unitSize);
+
+			m_size += g_unitSize;
 		}
 		void RemoveData(size_t index)
 		{
@@ -35,8 +42,11 @@ namespace ECS
 			if (index * TypeSize >= m_size)
 				return;
 			// 마지막 데이터를 제거할 위치로 복사
-			memcpy(m_data + index * TypeSize, m_data + m_size - TypeSize, TypeSize);
-			m_size -= TypeSize;
+			memcpy(m_data + (index * g_unitSize),
+				m_data + (m_size - g_unitSize),
+				g_unitSize);
+
+			m_size -= g_unitSize;
 		}
 
 		/**

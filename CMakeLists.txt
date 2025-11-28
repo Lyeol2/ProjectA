@@ -15,12 +15,13 @@ set(CMAKE_CXX_STANDARD 20)
 
 
 
+
 # 빌드할 Example Code 번호
 SET (EXAMPLE_NAME Example_0)
 
-# include 경로 전역 지정
-include_directories(${CMAKE_SOURCE_DIR}/include)
+
 
 # 하위 폴더 추가
 add_subdirectory(source)
 add_subdirectory(example)
+add_subdirectory(test)

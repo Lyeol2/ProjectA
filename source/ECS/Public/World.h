@@ -45,7 +45,7 @@ namespace ECS
 		/** @details 월드에 사용할 컴포넌트를 추가합니다. */
 		void RigisterComponentType();
 
-		template<typename ...Components>
+
 		void CreateEntity()
 		{
 

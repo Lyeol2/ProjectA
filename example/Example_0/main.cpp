@@ -21,7 +21,7 @@ int main()
 
     Application app;
      
-    //std::cout << ECS::Archetype<A, B>::size << std::endl;
+    std::cout << ECS::Archetype<A, B>::g_size << std::endl;
 
 
 

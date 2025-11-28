@@ -15,7 +15,7 @@ namespace ECS
 	template <typename Component>
 	struct SingleArchetype
 	{
-		constexpr static size_t size = sizeof(Component);
+		constexpr static size_t g_size = sizeof(Component);
 	};
 
 
@@ -33,7 +33,7 @@ namespace ECS
 			SingleArchetype<Components...>,
 			Archetype<Components...>>;
 
-		constexpr static size_t g_size = sizeof(Component) + next::size;
+		constexpr static size_t g_size = sizeof(Component) + next::g_size;
 
 	public:
 		/** @details 아키타입내의 청크 */
@@ -43,13 +43,13 @@ namespace ECS
 		/**
 		* Archetype의 쿼리
 		*/
-		static void Query(void(*query)(Component arg, Component... args))
-		{
-			for (size_t i = 0; i < length; i++)
-			{
-
-			}
-		}
+		//static void Query(void(*query)(Component arg, Component... args))
+		//{
+		//	//for (size_t i = 0; i < length; i++)
+		//	//{
+		//	//
+		//	//}
+		//}
 
 		static void AddData()
 		{
