@@ -1,4 +1,5 @@
 #pragma once
+#include <cstring>
 #include <iterator>
 
 namespace ECS
@@ -33,7 +34,7 @@ namespace ECS
 			
 			if (m_size + g_unitSize > 1024 * ChunkSize)
 				return;
-			memcpy(m_data + m_size, data, g_unitSize);
+			std::memcpy(m_data + m_size, data, g_unitSize);
 
 			m_size += g_unitSize;
 		}
@@ -43,7 +44,7 @@ namespace ECS
 			if (index * TypeSize >= m_size)
 				return;
 			// 마지막 데이터를 제거할 위치로 복사
-			memcpy(m_data + (index * g_unitSize),
+			std::memcpy(m_data + (index * g_unitSize),
 				m_data + (m_size - g_unitSize),
 				g_unitSize);
 
