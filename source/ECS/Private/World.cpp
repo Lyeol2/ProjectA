@@ -1,4 +1,3 @@
-#pragma once
 #include "ECS.h"
 
 namespace ECS
