@@ -1,7 +1,4 @@
 #pragma once
-
-#include "ECS.h"
-
 namespace ECS
 {
     /**
@@ -23,7 +20,7 @@ namespace ECS
     {
 
     };
-    struct ComponetC : Component
+    struct ComponentC : Component
     {
 
     };

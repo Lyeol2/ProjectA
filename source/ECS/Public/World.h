@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Archetype.h"
+#include <queue>
 /**
 * @brief Entity Component System
 * @details 
@@ -37,6 +38,8 @@ namespace ECS
 		/** @details 컴포넌트에 따른 아키타입 개수입니다. 컴포넌트의 개수가 변할때마다 변경됩니다. */
 		unsigned int m_archetypeCount = 0;
 
+		std::queue<unsigned int> m_freeEntityIndices;
+
 	public:
 		/** @details 월드를 초기화 합니다. */
 		void Initialize(const int& maxEntityCount);
@@ -45,11 +48,7 @@ namespace ECS
 		/** @details 월드에 사용할 컴포넌트를 추가합니다. */
 		void RigisterComponentType();
 
-
-		void CreateEntity()
-		{
-
-		}
+		void CreateEntity();
 
 		void DestroyEntity(const Entity& entity);
 

@@ -15,7 +15,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 
 
-
+SET (TEST_ACTIVE TRUE)
 # 빌드할 Example Code 번호
 SET (EXAMPLE_NAME Example_0)
 
@@ -23,5 +23,4 @@ SET (EXAMPLE_NAME Example_0)
 
 # 하위 폴더 추가
 add_subdirectory(source)
-add_subdirectory(example)
 add_subdirectory(test)

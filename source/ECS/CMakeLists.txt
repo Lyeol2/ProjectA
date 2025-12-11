@@ -8,6 +8,7 @@ target_sources(ECS
         Private/ECS.cpp
         Private/World.cpp
         Private/Archetype.cpp
+        Private/Signature.cpp
         Private/Component.cpp
     PUBLIC
         FILE_SET HEADERS
@@ -16,6 +17,7 @@ target_sources(ECS
             Public/World.h
             Public/Archetype.h
             Public/Component.h
+            Public/Signature.h
             Public/Chunk.h
             Public/Entity.h
 

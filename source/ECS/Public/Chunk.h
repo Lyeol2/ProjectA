@@ -3,14 +3,14 @@
 
 namespace ECS
 {
-
-
 	template<size_t indexSize, size_t ChunkSize, size_t TypeSize>
 	struct Chunk
 	{
 		char* m_data = nullptr;
 		int m_size = 0;
 
+
+		/** @details 유닛크기 = 색인크기 + 타입크기 */
 		constexpr static size_t g_unitSize = indexSize + TypeSize;
 
 		Chunk()
@@ -30,6 +30,7 @@ namespace ECS
 		void AddData(const char* data)
 		{
 			// 사이즈가 넘는다면 추가하지 않음
+			
 			if (m_size + g_unitSize > 1024 * ChunkSize)
 				return;
 			memcpy(m_data + m_size, data, g_unitSize);
