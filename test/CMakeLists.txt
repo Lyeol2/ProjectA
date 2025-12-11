@@ -21,8 +21,9 @@ target_include_directories(TEST PUBLIC
 
 
 target_link_libraries(TEST PRIVATE 
-    ${CMAKE_CURRENT_LIST_DIR}/lib/gtest.lib
-    ${CMAKE_CURRENT_LIST_DIR}/lib/gmock.lib
+    ${CMAKE_CURRENT_LIST_DIR}/lib/gtest.a
+    ${CMAKE_CURRENT_LIST_DIR}/lib/gmock.a
+    pthread
 )
 
     
