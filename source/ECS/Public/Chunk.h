@@ -1,5 +1,5 @@
-#pragma once
-#include <cstring>
+ï»¿#pragma once
+#include <vector>
 #include <iterator>
 
 namespace ECS
@@ -8,15 +8,16 @@ namespace ECS
 	struct Chunk
 	{
 		char* m_data = nullptr;
+
 		int m_size = 0;
 
 
-		/** @details À¯´ÖÅ©±â = »öÀÎÅ©±â + Å¸ÀÔÅ©±â */
+		/** @details ìœ ë‹›í¬ê¸° = ìƒ‰ì¸í¬ê¸° + íƒ€ì…í¬ê¸° */
 		constexpr static size_t g_unitSize = indexSize + TypeSize;
 
 		Chunk()
 		{
-			// KB ´ÜÀ§
+			// KB ë‹¨ìœ„ -TODO- ìƒ‰ì¸í¬ê¸°ë‘ íƒ€ì…í¬ê¸°ëŠ” ì¶”ê°€í•  í•„ìš”ì—†ì„ë“¯
 			m_data = new char[1024 * (indexSize + ChunkSize)];
 		}
 		virtual ~Chunk() noexcept
@@ -28,47 +29,93 @@ namespace ECS
 			}
 		}
 
-		void AddData(const char* data)
+
+		Chunk(const Chunk&) = delete;
+
+
+		Chunk& operator=(const Chunk&) = delete;
+
+
+		Chunk(Chunk&& other) noexcept
+			: m_data(other.m_data), m_size(other.m_size)
 		{
-			// »çÀÌÁî°¡ ³Ñ´Â´Ù¸é Ãß°¡ÇÏÁö ¾ÊÀ½
-			
+			other.m_data = nullptr;
+			other.m_size = 0;
+		}
+
+		Chunk& operator=(Chunk&& other) noexcept {
+			if (this != &other) {
+				delete[] m_data;
+				m_data = other.m_data;
+				m_size = other.m_size;
+
+				other.m_data = nullptr;
+				other.m_size = 0;
+			}
+			return *this;
+		}
+
+	public:
+		const int GetCount()
+		{
+			return m_size / g_unitSize;
+		}
+
+		bool AddData(const char* data)
+		{
+			// ì‚¬ì´ì¦ˆê°€ ë„˜ëŠ”ë‹¤ë©´ ì¶”ê°€í•˜ì§€ ì•ŠìŒ
+
 			if (m_size + g_unitSize > 1024 * ChunkSize)
-				return;
+				return false;
 			std::memcpy(m_data + m_size, data, g_unitSize);
 
 			m_size += g_unitSize;
+			return true;
 		}
-		void RemoveData(size_t index)
+
+		bool RemoveData(size_t index)
 		{
-			// ÀÎµ¦½º°¡ À¯È¿ÇÏÁö ¾Ê´Ù¸é Á¦°ÅÇÏÁö ¾ÊÀ½
+			// ì¸ë±ìŠ¤ê°€ ìœ íš¨í•˜ì§€ ì•Šë‹¤ë©´ ì œê±°í•˜ì§€ ì•ŠìŒ
 			if (index * TypeSize >= m_size)
-				return;
-			// ¸¶Áö¸· µ¥ÀÌÅÍ¸¦ Á¦°ÅÇÒ À§Ä¡·Î º¹»ç
+				return false;
+			// ë§ˆì§€ë§‰ ë°ì´í„°ë¥¼ ì œê±°í•  ìœ„ì¹˜ë¡œ ë³µì‚¬
 			std::memcpy(m_data + (index * g_unitSize),
 				m_data + (m_size - g_unitSize),
 				g_unitSize);
 
 			m_size -= g_unitSize;
+			return true;
 		}
 
 		/**
-		* @brief ChunkÀÇ Ä¿½ºÅÒ Iterator
-		* @details TypeSize¸¸Å­ Äõ¸®¸¦ µ¹·Á ÄÄÆ÷³ÍÆ® µ¥ÀÌÅÍ¸¦ Á¢±ÙÇÏ´Â ¹İº¹ÀÚ¸¦ »ı¼ºÇÕ´Ï´Ù.
-		* @param[in] template Components... - Archetype¿¡ ¼ÓÇÏ´Â ÄÄÆ÷³ÍÆ® Å¸ÀÔµé
+		* @brief Chunkì˜ ì»¤ìŠ¤í…€ Iterator
+		* @details TypeSizeë§Œí¼ ì¿¼ë¦¬ë¥¼ ëŒë ¤ ì»´í¬ë„ŒíŠ¸ ë°ì´í„°ë¥¼ ì ‘ê·¼í•˜ëŠ” ë°˜ë³µìë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
+		* @param[in] template Components... - Archetypeì— ì†í•˜ëŠ” ì»´í¬ë„ŒíŠ¸ íƒ€ì…ë“¤
 		*/
-		class iterator : std::iterator<std::input_iterator_tag, char>
-		{
-			char* _ptr;
+		class iterator {
 		public:
-			explicit iterator(char* ptr) :_ptr(ptr) {}
+			using iterator_category = std::input_iterator_tag;
+			using value_type = char*;
+			using difference_type = std::ptrdiff_t;
 
-			iterator& operator++() { _ptr += TypeSize; return (*this); }
-			iterator operator++(int) { iterator retval = *this; _ptr += TypeSize; return retval; }
+		private:
+			char* ptr;
 
-			reference operator*() { return *_ptr; }
+		public:
+			explicit iterator(char* p) : ptr(p) {}
 
-			bool operator==(iterator other) const { return _ptr == other._ptr; }
-			bool operator!=(iterator other) const { return _ptr != other._ptr; }
+			char* operator*() const {
+				return ptr + indexSize;
+			}
+
+			iterator& operator++() {
+				ptr += g_unitSize;
+				return *this;
+			}
+
+			bool operator==(const iterator& other) const {
+				return ptr == other.ptr;
+			}
 		};
 
 		iterator begin()
@@ -79,5 +126,95 @@ namespace ECS
 		{
 			return iterator(m_data + m_size);
 		}
+	};
+
+
+	template<size_t indexSize, size_t ChunkSize, size_t TypeSize>
+	struct ChunkVector
+	{
+		std::vector<Chunk<indexSize, ChunkSize, TypeSize>> m_chunks;
+
+		int m_size = 0;
+
+		struct iterator {
+			using iterator_category = std::input_iterator_tag;
+			using value_type = char*;
+			using difference_type = std::ptrdiff_t;
+
+			ChunkVector* owner;
+			size_t chunk_idx;
+
+			using chunk_type = Chunk<indexSize, ChunkSize, TypeSize>;
+			typename chunk_type::iterator inner{ nullptr };
+
+			char* operator*() const {
+				return *inner;
+			}
+
+			iterator& operator++() {
+				++inner;
+				if (inner == owner->m_chunks[chunk_idx].end()) {
+					++chunk_idx;
+					if (chunk_idx < owner->m_chunks.size())
+						inner = owner->m_chunks[chunk_idx].begin();
+					else
+						return *this;
+				}
+				return *this;
+			}
+
+			bool operator==(const iterator& other) const {
+				return chunk_idx == other.chunk_idx &&
+					(chunk_idx == owner->m_chunks.size() || inner == other.inner);
+			}
+			bool operator!=(const iterator& other) const {
+				return !(*this == other);
+			};
+
+			iterator begin() {
+				if (m_chunks.empty())
+					return end();
+
+				return iterator{ this, 0, m_chunks[0].begin() };
+			}
+
+			iterator end() {
+				return iterator{ this, m_chunks.size(), {} };
+			}
+
+		};
+		/**
+			* Archetypeì˜ ì¿¼ë¦¬
+		*/
+		void AddData(const char* data)
+		{
+			if (m_chunks.size() < 1)
+			{
+				m_chunks.push_back(Chunk<sizeof(unsigned int), 16, TypeSize>());
+			}
+
+			if (!m_chunks[m_chunks.size() - 1].AddData(data))
+			{
+				m_chunks.push_back(Chunk<sizeof(unsigned int), 16, TypeSize>());
+				m_chunks[m_chunks.size() - 1].AddData(data);
+			}
+
+		}
+		void RemoveData(int index)
+		{
+			int eraseIdx = -1;
+			for (size_t i = 0; i < m_chunks.size(); i++)
+			{
+				if (!m_chunks[i].RemoveData(index)) continue;
+
+				if (m_chunks[i].GetCount() <= 0)
+				{
+					eraseIdx = i;
+				}
+			}
+			if (eraseIdx >= 0)
+				m_chunks.erase(m_chunks.begin() + eraseIdx);
+		}
+
 	};
 }

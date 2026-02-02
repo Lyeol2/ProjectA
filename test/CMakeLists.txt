@@ -16,14 +16,13 @@ target_sources(TEST
 )
 
 target_include_directories(TEST PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/lib/googletest/googletest/include
-    ${CMAKE_CURRENT_LIST_DIR}/lib/googletest/googlemock/include)
+    ${CMAKE_CURRENT_LIST_DIR}/lib/googletest/googletest/include)
 
 
 target_link_libraries(TEST PRIVATE 
-    ${CMAKE_CURRENT_LIST_DIR}/lib/googletest/build/lib/libgtest.a
-    ${CMAKE_CURRENT_LIST_DIR}/lib/googletest/build/lib/libgmock.a
-    pthread
+    ${CMAKE_CURRENT_LIST_DIR}/lib/googletest/build/lib/Debug/gtest.lib
+    ${CMAKE_CURRENT_LIST_DIR}/lib/googletest/build/lib/Debug/gmock.lib
+
 )
 
     

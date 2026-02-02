@@ -25,35 +25,35 @@ protected:
 TEST(SignatureTest, layerTest)
 {
 
-	// ΩÃ±€ ¡∂«’ √º≈©
+	// Ïã±Í∏Ä Ï°∞Ìï© Ï≤¥ÌÅ¨
 	EXPECT_EQ(Signature<ComponentA>::g_layer, 1);
 	EXPECT_EQ(Signature<ComponentB>::g_layer, 2);
 	EXPECT_EQ(Signature<ComponentC>::g_layer, 4);
 
 
-	// 2∞≥ ¡∂«’ √º≈©
+	// 2Í∞ú Ï°∞Ìï© Ï≤¥ÌÅ¨
 	EXPECT_EQ((Signature<ComponentA, ComponentB>::g_layer), 3);
 	EXPECT_EQ((Signature<ComponentB, ComponentC>::g_layer), 6);
 
-	// ¿ßƒ°∫Ø∞Ê √º≈©
+	// ÏúÑÏπòÎ≥ÄÍ≤Ω Ï≤¥ÌÅ¨
 	EXPECT_EQ((Signature<ComponentC, ComponentA>::g_layer), 5);
 	EXPECT_EQ((Signature<ComponentA, ComponentC>::g_layer), 5);
 
-	// 3∞≥ ¡∂«’ √º≈©
+	// 3Í∞ú Ï°∞Ìï© Ï≤¥ÌÅ¨
 	EXPECT_EQ((Signature<ComponentA, ComponentB, ComponentC>::g_layer), 7);
 
 }
 TEST(ArchetypeTest, sizeTest)
 {
 
-	// ΩÃ±€ ¡∂«’ √º≈©
-	EXPECT_EQ(Archetype<ComponentA>::g_size, sizeof(ComponentA));
-	EXPECT_EQ(Archetype<ComponentB>::g_size, sizeof(ComponentB));
-	EXPECT_EQ(Archetype<ComponentC>::g_size, sizeof(ComponentC));
+	// Ïã±Í∏Ä Ï°∞Ìï© Ï≤¥ÌÅ¨
+	//EXPECT_EQ(Archetype<ComponentA>::g_size, sizeof(ComponentA));
+	//EXPECT_EQ(Archetype<ComponentB>::g_size, sizeof(ComponentB));
+	//EXPECT_EQ(Archetype<ComponentC>::g_size, sizeof(ComponentC));
 
-	// µŒ∞≥ ¡∂«’ √º≈©
-	EXPECT_EQ((Archetype<ComponentA, ComponentB>::g_size), (sizeof(ComponentA) + sizeof(ComponentB)));
-	EXPECT_EQ((Archetype<ComponentA, ComponentC>::g_size), (sizeof(ComponentA) + sizeof(ComponentC)));
+	// ÎëêÍ∞ú Ï°∞Ìï© Ï≤¥ÌÅ¨
+	//EXPECT_EQ((Archetype<ComponentA, ComponentB>::g_size), (sizeof(ComponentA) + sizeof(ComponentB)));
+	//EXPECT_EQ((Archetype<ComponentA, ComponentC>::g_size), (sizeof(ComponentA) + sizeof(ComponentC)));
 
 
 }

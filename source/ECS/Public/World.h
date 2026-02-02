@@ -1,25 +1,26 @@
 #include "Entity.h"
 #include "Archetype.h"
 #include <queue>
+
 /**
 * @brief Entity Component System
 * @details 
-* @param[in] a ¼ıÀÚ1
-* @param[in] b ¼ıÀÚ2
-* @param[out] c °á°ú
+* @param[in] a ìˆ«ì1
+* @param[in] b ìˆ«ì2
+* @param[out] c ê²°ê³¼
 * @return void
-* @note Âü°í ¼³¸í
-* @todo ÇÒ ÀÏ ¼³¸í
-* @pre ¹Ì¸® È£ÃâÇØ¾ß ÇÒ »çÇ×
-* @bug ¹ö±× ¼³¸í
-* @warning Âü°í ¸µÅ©, ÆäÀÌÁö
-* @see Âü°íÇÒ ÇÔ¼ö ¶Ç´Â ÆäÀÌÁö
+* @note ì°¸ê³  ì„¤ëª…
+* @todo í•  ì¼ ì„¤ëª…
+* @pre ë¯¸ë¦¬ í˜¸ì¶œí•´ì•¼ í•  ì‚¬í•­
+* @bug ë²„ê·¸ ì„¤ëª…
+* @warning ì°¸ê³  ë§í¬, í˜ì´ì§€
+* @see ì°¸ê³ í•  í•¨ìˆ˜ ë˜ëŠ” í˜ì´ì§€
 */
 namespace ECS
 {
 	/**
-	* @brief ÀÌ°Ç ¿ùµå Å¬·¡½º´Ù
-	* @details ¿ùµå´Â ECSÀÇ ÇÙ½É ±¸¼º ¿ä¼Ò·Î, ¿£Æ¼Æ¼¿Í ÄÄÆ÷³ÍÆ®¸¦ °ü¸®ÇÕ´Ï´Ù.
+	* @brief ì´ê±´ ì›”ë“œ í´ë˜ìŠ¤ë‹¤
+	* @details ì›”ë“œëŠ” ECSì˜ í•µì‹¬ êµ¬ì„± ìš”ì†Œë¡œ, ì—”í‹°í‹°ì™€ ì»´í¬ë„ŒíŠ¸ë¥¼ ê´€ë¦¬í•©ë‹ˆë‹¤.
 	*/
 	class World
 	{
@@ -29,23 +30,23 @@ namespace ECS
 
 	private:
 
-		/** @details ¿ùµåÀÇ entity ÇÊµåÀÔ´Ï´Ù */
+		/** @details ì›”ë“œì˜ entity í•„ë“œì…ë‹ˆë‹¤ */
 		unsigned int m_maxEntityCount = 0;
-		/** @details ¿ùµåÀÇ entity ÇÊµåÀÔ´Ï´Ù */
+		/** @details ì›”ë“œì˜ entity í•„ë“œì…ë‹ˆë‹¤ */
 		unsigned int* m_entities = nullptr;
-		/** @details ¿ùµåÀÇ ÄÄÆ÷³ÍÆ® °³¼öÀÔ´Ï´Ù. ÀÌ ÄÄÆ÷³ÍÆ® °³¼ö´Â ¿£Æ¼Æ¼ ±¸Á¶¸¦ Á¤·ÄÇÒ¶§ ¾²ÀÔ´Ï´Ù. */
+		/** @details ì›”ë“œì˜ ì»´í¬ë„ŒíŠ¸ ê°œìˆ˜ì…ë‹ˆë‹¤. ì´ ì»´í¬ë„ŒíŠ¸ ê°œìˆ˜ëŠ” ì—”í‹°í‹° êµ¬ì¡°ë¥¼ ì •ë ¬í• ë•Œ ì“°ì…ë‹ˆë‹¤. */
 		unsigned int m_componentCount = 0;
-		/** @details ÄÄÆ÷³ÍÆ®¿¡ µû¸¥ ¾ÆÅ°Å¸ÀÔ °³¼öÀÔ´Ï´Ù. ÄÄÆ÷³ÍÆ®ÀÇ °³¼ö°¡ º¯ÇÒ¶§¸¶´Ù º¯°æµË´Ï´Ù. */
+		/** @details ì»´í¬ë„ŒíŠ¸ì— ë”°ë¥¸ ì•„í‚¤íƒ€ì… ê°œìˆ˜ì…ë‹ˆë‹¤. ì»´í¬ë„ŒíŠ¸ì˜ ê°œìˆ˜ê°€ ë³€í• ë•Œë§ˆë‹¤ ë³€ê²½ë©ë‹ˆë‹¤. */
 		unsigned int m_archetypeCount = 0;
 
 		std::queue<unsigned int> m_freeEntityIndices;
 
 	public:
-		/** @details ¿ùµå¸¦ ÃÊ±âÈ­ ÇÕ´Ï´Ù. */
+		/** @details ì›”ë“œë¥¼ ì´ˆê¸°í™” í•©ë‹ˆë‹¤. */
 		void Initialize(const int& maxEntityCount);
-		/** @details ¿ùµåÀÇ ¿£Æ¼Æ¼ ÇÊµå¸¦ Á¤·ÄÇÕ´Ï´Ù. ÄÄÆ÷³ÍÆ® °³¼ö¿¡ ¿µÇâÀ» ¹Ş½À´Ï´Ù. */
+		/** @details ì›”ë“œì˜ ì—”í‹°í‹° í•„ë“œë¥¼ ì •ë ¬í•©ë‹ˆë‹¤. ì»´í¬ë„ŒíŠ¸ ê°œìˆ˜ì— ì˜í–¥ì„ ë°›ìŠµë‹ˆë‹¤. */
 		void AlignEntities();
-		/** @details ¿ùµå¿¡ »ç¿ëÇÒ ÄÄÆ÷³ÍÆ®¸¦ Ãß°¡ÇÕ´Ï´Ù. */
+		/** @details ì›”ë“œì— ì‚¬ìš©í•  ì»´í¬ë„ŒíŠ¸ë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤. */
 		void RigisterComponentType();
 
 		void CreateEntity();

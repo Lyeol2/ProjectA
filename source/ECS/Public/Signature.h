@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <type_traits>
 
@@ -33,6 +33,8 @@ namespace ECS
     struct Signature
     {
         inline static size_t g_layer = (ComponentBit<Components>::GetLayer() | ... | 0ull);
+        constexpr static size_t g_size = (sizeof(Components) + ... + 0);
 
     };
+    
 }

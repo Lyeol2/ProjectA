@@ -1,78 +1,58 @@
-#pragma once
+ï»¿#pragma once
 #include <Chunk.h>
+#include <map>
 #include <vector>
+#include <algorithm>
 #include <type_traits>
 #include <Signature.h>
+#include <TMPUtility.h>
+#include <Query.h>
 
 namespace ECS
 {
-
-
+	
 	/**
-	* @brief Entity Component SystemÀÇ Å½»ö ÃÖÀûÈ­¸¦ À§ÇÑ Archetype ±¸Á¶Ã¼
-	* @details ArchetypeÀº Æ¯Á¤ Á¶ÇÕÀÇ ÄÄÆ÷³ÍÆ®¸¦ °¡Áø ¿£Æ¼Æ¼µéÀ» ±×·ìÈ­ÇÏ¿© ¸Ş¸ğ¸® Á¢±Ù ÆĞÅÏÀ» ÃÖÀûÈ­ÇÕ´Ï´Ù.
-	* @param[in] template Components... - Archetype¿¡ ¼ÓÇÏ´Â ÄÄÆ÷³ÍÆ® Å¸ÀÔµé
+	* @brief Entity Component Systemì˜ íƒìƒ‰ ìµœì í™”ë¥¼ ìœ„í•œ Archetype êµ¬ì¡°ì²´
+	* @details Archetypeì€ íŠ¹ì • ì¡°í•©ì˜ ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì§„ ì—”í‹°í‹°ë“¤ì„ ê·¸ë£¹í™”í•˜ì—¬ ë©”ëª¨ë¦¬ ì ‘ê·¼ íŒ¨í„´ì„ ìµœì í™”í•©ë‹ˆë‹¤.
+	* @param[in] template Components... - Archetypeì— ì†í•˜ëŠ” ì»´í¬ë„ŒíŠ¸ íƒ€ì…ë“¤
 	*/
-	template <typename... Components>
-	struct Archetype
+	template <int SignatureLayer, int DataSize>
+	struct AlignArchetype
 	{
-		Signature<Components...> signature;
-
-
-		constexpr static size_t g_size = (sizeof(Components) + ... + 0);
 
 	public:
-		/** @details ¾ÆÅ°Å¸ÀÔ³»ÀÇ Ã»Å© */
-		static std::vector<Chunk<sizeof(unsigned int), 16, g_size>> g_chunks;
-
+		/** @details ì•„í‚¤íƒ€ì…ë‚´ì˜ ì²­í¬ */
+		static ChunkVector<sizeof(unsigned int), 16, DataSize> g_chunks;
 
 		/**
-		* ArchetypeÀÇ Äõ¸®
+		* Archetypeì˜ ì¿¼ë¦¬
 		*/
-		static void Query(void(*query)(Components... args))
+		static void AddData(const char* data)
 		{
-			if (g_chunks.size() < 1)
-			{
-				return;
-			}
-			for (size_t i = 0; i < g_chunks.size(); i++)
-			{
-				for (auto data : g_chunks[i])
-				{
-
-				}
-			}
+			g_chunks.AddData(data);
 		}
+		static void RemoveData(int index)
+		{
+			g_chunks.RemoveData(index);
+		}
+	};
+
+	template<typename... Components>
+	struct Archetype
+	{
+
+	public:
+
+		using Container = typename AlignArchetype<Signature<Components...>::g_layer, Signature<Components...>::g_size>;
+		
 
 		static void AddData()
 		{
-			if (g_chunks.size() < 1)
-			{
-				g_chunks.push_back(Chunk<sizeof(unsigned int), 16, g_size>());
-			}
-
-			for (size_t i = 0; i < g_chunks.size(); i++)
-			{
-				for (auto data : g_chunks[i])
-				{
-
-				}
-			}
-
+			Container::AddData();
 		}
-		static void RemoveData()
+		static void RemoveData(int index)
 		{
-
-		}
-
-	};
-
-
-	template<int Layer>
-	struct AlignArchetype
-	{
-		static void Chunk()
-		{
+			Container::RemoveData(index);
 
 		}
 	};

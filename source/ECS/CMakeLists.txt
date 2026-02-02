@@ -1,4 +1,4 @@
-# source/ECS/CMakeLists.txt
+﻿# source/ECS/CMakeLists.txt
 
 
 add_library(ECS)
@@ -10,16 +10,19 @@ target_sources(ECS
         Private/Archetype.cpp
         Private/Signature.cpp
         Private/Component.cpp
+        Private/Query.cpp
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS Public
         FILES
+            Public/TMPUtility.h
             Public/World.h
             Public/Archetype.h
             Public/Component.h
             Public/Signature.h
             Public/Chunk.h
             Public/Entity.h
+            Public/Query.h
 
 )
 
